@@ -141,7 +141,7 @@ void setup()
       }
       else
       {
-        memPos = memPos + 1;
+        memPos = auxMemPos + 1;
       }
       Serial.print("Grabar en posicion = ");
       Serial.println(memPos);
