@@ -37,7 +37,7 @@ void loop() {
   while(!endLecture)
   {
     altValue = 0;
-    nextMemPos = EEPROM_readAnything(memPos,altValue);
+    nextMemPos = memPos + EEPROM_readAnything(memPos,altValue);
     if (memEnd || !altValue)
     {
       Serial.println("Finalizada lectura de memoria");
@@ -53,7 +53,7 @@ void loop() {
     delay(2000);
     if (nextMemPos!=memPos)
     {
-      memPos = nextMemPos;
+      memPos = nextMemPos+1;
     }
     else
     {

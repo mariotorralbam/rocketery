@@ -42,41 +42,41 @@ bool endMemory;
 //Inicializacion correcta
 void signalInitOk()
 {  
-  Serial.println("Inicialización completada correctamente");
-  /*
+  //Serial.println("Inicialización completada correctamente");
+  
   digitalWrite(pinBuzzer, HIGH);   // Ponemos en alto(5V) el pin del buzzer
   delay(30);                       // Esperamos 30ms
   digitalWrite(pinBuzzer, LOW);    // Ponemos en bajo(0V) el pin del buzzer
   delay(100);                      // Esperamos 0.1 segundos
-  */
+  
 }
 //Vuelo terminado correctamente
 void signalVueloOk()
 {
-  Serial.println("Vuelo completado correctamente");
-  /*
+  //Serial.println("Vuelo completado correctamente");
+  
   digitalWrite(pinBuzzer, HIGH);   // Ponemos en alto(5V) el pin del buzzer
   delay(30);                       // Esperamos 30ms
   digitalWrite(pinBuzzer, LOW);    // Ponemos en bajo(0V) el pin del buzzer
   delay(2000);                     // Esperamos 2 segundos
-  */
+  
 }
 //Inicialización incorrecta
 void signalInitKo()
 {
-  Serial.println("Inicializacion con errores");
-  /*
+  //Serial.println("Inicializacion con errores");
+  
   digitalWrite(pinBuzzer, HIGH);   // Ponemos en alto(5V) el pin del buzzer
   delay(60);                       // Esperamos 60ms
   digitalWrite(pinBuzzer, LOW);    // Ponemos en bajo(0V) el pin del buzzer
   delay(60);                       // Esperamos 60ms
-  */
+  
 }
 //Erroes durante el vuelo
 void signalVueloKo()
 {
-  Serial.println("Vuelo finalizado con errores");
-  /*
+  //Serial.println("Vuelo finalizado con errores");
+  
   digitalWrite(pinBuzzer, HIGH);   // Ponemos en alto(5V) el pin del buzzer
   delay(60);                       // Esperamos 60ms
   digitalWrite(pinBuzzer, LOW);    // Ponemos en bajo(0V) el pin del buzzer
@@ -85,7 +85,7 @@ void signalVueloKo()
   delay(60);                       // Esperamos 60ms
   digitalWrite(pinBuzzer, LOW);    // Ponemos en bajo(0V) el pin del buzzer
   delay(2000);                     // Esperamos 2 segundos
-  */
+
 }
 //Funcion para escribir en memoria valores dobles
 template <class T> int EEPROM_writeAnything(int ee, const T& value)
@@ -112,8 +112,8 @@ template <class T> int EEPROM_readAnything(int ee, T& value)
 //
 void setup()
 {
-  Serial.begin(9600);
-  Serial.println("INICIO");
+  //Serial.begin(9600);
+  //Serial.println("INICIO");
   pinMode(pinBuzzer, OUTPUT);
   
   minimaPresion = 0;
@@ -125,32 +125,23 @@ void setup()
   while(!endMemory)
   {
     auxValue = 0;
-    auxMemPos = 0;
-    Serial.print("memPos = ");
-    Serial.println(memPos);
-    Serial.print("auxMemPos = ");
-    Serial.println(auxMemPos);
-    auxMemPos = EEPROM_readAnything(memPos,auxValue);
-    Serial.print("auxValue = ");
-    Serial.println(auxValue);
+
+    auxMemPos = memPos + EEPROM_readAnything(memPos,auxValue);
+
     if ( auxMemPos!=memPos )
     {
       if (auxValue)
       {
-        Serial.println("Dentro if");
-        memPos = auxMemPos;
+        memPos = auxMemPos + 1;
       }
       else
       {
-        memPos = 0;
         endMemory = true;
       }
     }
     else
     {
       memPos = auxMemPos + 1;
-      Serial.print("Grabar en posicion = ");
-      Serial.println(memPos);
       endMemory = true;
     }
   }
@@ -205,11 +196,7 @@ void loop()
       else
       {
         //Grabamos la altura máxima
-        Serial.print("memPos = ");
-        Serial.println(memPos);
         EEPROM_writeAnything(memPos, altimetro.getAltura(altimetro.getCota0(), minimaPresion));
-        Serial.print("Altura maxima = ");
-        Serial.println(altimetro.getAltura(altimetro.getCota0(), minimaPresion));
         while (true)
         {
           signalVueloOk();
