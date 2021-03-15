@@ -124,11 +124,14 @@ void setup()
   endMemory = false;
   while(!endMemory)
   {
+    auxValue = 0;
     auxMemPos = EEPROM_readAnything(memPos,auxValue);
     Serial.print("memPos = ");
     Serial.println(memPos);
     Serial.print("auxMemPos = ");
     Serial.println(auxMemPos);
+    Serial.print("auxValue = ");
+    Serial.println(auxValue);
     if ( auxMemPos!=memPos && !auxValue )
     {
       memPos = auxMemPos;
