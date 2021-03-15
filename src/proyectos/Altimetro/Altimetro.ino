@@ -112,8 +112,8 @@ template <class T> int EEPROM_readAnything(int ee, T& value)
 //
 void setup()
 {
-  // Serial.begin(9600);
-  //Serial.println("INICIO");
+  Serial.begin(9600);
+  Serial.println("INICIO");
   pinMode(pinBuzzer, OUTPUT);
   
   minimaPresion = 0;
@@ -125,6 +125,10 @@ void setup()
   while(!endMemory)
   {
     auxMemPos = EEPROM_readAnything(memPos,auxValue);
+    Serial.print("memPos = ");
+    Serial.println(memPos);
+    Serial.print("auxMemPos = ");
+    Serial.println(auxMemPos);
     if ( auxMemPos!=memPos && !auxValue )
     {
       memPos = auxMemPos;
@@ -139,6 +143,8 @@ void setup()
       {
         memPos = memPos + 1;
       }
+      Serial.print("Grabar en posicion = ");
+      Serial.println(memPos);
       endMemory = true;
     }
   }
@@ -194,8 +200,8 @@ void loop()
       {
         //Grabamos la altura máxima
         EEPROM_writeAnything(memPos, altimetro.getAltura(altimetro.getCota0(), minimaPresion));
-        //Serial.print("Altura maxima = ");
-        //Serial.println(altimetro.getAltura(altimetro.getCota0(), minimaPresion));
+        Serial.print("Altura maxima = ");
+        Serial.println(altimetro.getAltura(altimetro.getCota0(), minimaPresion));
         while (true)
         {
           signalVueloOk();
