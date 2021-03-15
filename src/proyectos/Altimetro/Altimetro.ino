@@ -84,42 +84,14 @@ void signalVueloKo()
   delay(2000);                     // Esperamos 2 segundos
   
 }
-//Error de memoria llena
-void memoryFull()
+//Funcion para escribir en memoria valores dobles
+template <class T> int EEPROM_writeAnything(int ee, const T& value)
 {
-  //Serial.println("Memoria llena");
-  digitalWrite(pinBuzzer, HIGH);   // Ponemos en alto(5V) el pin del buzzer
-  delay(100);                      // Esperamos 100ms
-  digitalWrite(pinBuzzer, LOW);    // Ponemos en bajo(0V) el pin del buzzer
-  delay(60);                       // Esperamos 60ms
-  
-}
-//Recupera la primera posición de memoria libre
-//donde grabará la altura máxima registrada
-//Si toda la memoria está llena, devuelve -1
-int getEEPROMfst()
-{
-  bool mempos = false;
-  int i =0;
-  while (!mempos&&i<EEPROM.length())
-  {
-    if (!EEPROM.read(i))
-    {
-      mempos = true;
-    }
-    else
-    {
-      i++;
-    }
-  }
-  if(mempos)
-  {
+    const byte* p = (const byte*)(const void*)&value;
+    unsigned int i;
+    for (i = 0; i < sizeof(value); i++)
+          EEPROM.write(ee++, *p++);
     return i;
-  }
-  else
-  {
-    return -1;
-  }
 }
 //
 //********************************
@@ -136,7 +108,6 @@ void setup()
 //
   altimetro.Initialize();
 //
-  memPos = getEEPROMfst();
   if ( altimetro.getCota0() == 0 || memPos == -1)
   {
     error = true;
@@ -184,7 +155,7 @@ void loop()
       else
       {
         //Grabamos la altura máxima
-        EEPROM.write(memPos, altimetro.getAltura(altimetro.getCota0(), minimaPresion));
+        EEPROM_writeAnything(0, altimetro.getAltura(altimetro.getCota0(), minimaPresion));
         //Serial.print("Altura maxima = ");
         //Serial.println(altimetro.getAltura(altimetro.getCota0(), minimaPresion));
         while (true)
@@ -198,19 +169,9 @@ void loop()
   {
     if (minimaPresion == 0)
     {
-      if (memPos == -1)
+	  while (true)
       {
-        while (true)
-        {
-          memoryFull();
-        }
-      }
-      else
-      {
-        while (true)
-        {
-          signalInitKo();
-        }
+        signalInitKo();
       }
     }
     else
