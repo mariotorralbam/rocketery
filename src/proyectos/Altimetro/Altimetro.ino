@@ -125,14 +125,21 @@ void setup()
   while(!endMemory)
   {
     auxMemPos = EEPROM_readAnything(memPos,auxValue);
-    if (auxMemPos!=memPos)
+    if ( auxMemPos!=memPos && !auxValue )
     {
       memPos = auxMemPos;
     }
     else
     {
+      if (!auxValue)
+      {
+        memPos = 0;
+      }
+      else
+      {
+        memPos = memPos + 1;
+      }
       endMemory = true;
-      memPos = memPos + 1;
     }
   }
 //
