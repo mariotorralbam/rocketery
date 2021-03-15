@@ -35,6 +35,7 @@ double minimaPresion;
 int memPos;
 int auxMemPos;
 double auxValue;
+bool endMemory;
 //********************************
 //Funciones auxiliares
 //********************************
@@ -114,10 +115,13 @@ void setup()
   // Serial.begin(9600);
   //Serial.println("INICIO");
   pinMode(pinBuzzer, OUTPUT);
+  
   minimaPresion = 0;
-  error = false;
   memPos = 0;
   auxMemPos = 0;
+  
+  error = false;
+  endMemory = false;
   while(!endMemory)
   {
     auxMemPos = EEPROM_readAnything(memPos,auxValue);
