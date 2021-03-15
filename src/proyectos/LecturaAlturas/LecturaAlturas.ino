@@ -5,7 +5,9 @@ en consola de las alturas registradas
 #include <EEPROM.h>
 //
 bool endLecture;
+bool memEnd;
 int memPos;
+int nextMemPos;
 double altValue;
 
 template <class T> int EEPROM_readAnything(int ee, T& value)
@@ -20,6 +22,7 @@ template <class T> int EEPROM_readAnything(int ee, T& value)
 //SETUP
 void setup() {
   endLecture = false;
+  memEnd = false;
   memPos = 0;
   Serial.begin(9600);
   Serial.println("*************************");
@@ -34,8 +37,8 @@ void loop() {
   while(!endLecture)
   {
     altValue = 0;
-    memPos = EEPROM_readAnything(memPos,altValue);
-    if (!altValue)
+    nextMemPos = EEPROM_readAnything(memPos,altValue);
+    if (memEnd)
     {
       Serial.println("Finalizada lectura de memoria");
       endLecture = true;
@@ -48,5 +51,13 @@ void loop() {
       Serial.println("**********");
     }
     delay(2000);
+    if (nextMemPos!=memPos)
+    {
+      memPos = nextMemPos;
+    }
+    else
+    {
+      memEnd = true;
+    }
   }
 }
