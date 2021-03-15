@@ -42,41 +42,41 @@ bool endMemory;
 //Inicializacion correcta
 void signalInitOk()
 {  
-  //Serial.println("Inicialización completada correctamente");
-
+  Serial.println("Inicialización completada correctamente");
+  /*
   digitalWrite(pinBuzzer, HIGH);   // Ponemos en alto(5V) el pin del buzzer
   delay(30);                       // Esperamos 30ms
   digitalWrite(pinBuzzer, LOW);    // Ponemos en bajo(0V) el pin del buzzer
   delay(100);                      // Esperamos 0.1 segundos
-  
+  */
 }
 //Vuelo terminado correctamente
 void signalVueloOk()
 {
-  //Serial.println("Vuelo completado correctamente");
-  
+  Serial.println("Vuelo completado correctamente");
+  /*
   digitalWrite(pinBuzzer, HIGH);   // Ponemos en alto(5V) el pin del buzzer
   delay(30);                       // Esperamos 30ms
   digitalWrite(pinBuzzer, LOW);    // Ponemos en bajo(0V) el pin del buzzer
   delay(2000);                     // Esperamos 2 segundos
-  
+  */
 }
 //Inicialización incorrecta
 void signalInitKo()
 {
-  //Serial.println("Inicializacion con errores");
-  
+  Serial.println("Inicializacion con errores");
+  /*
   digitalWrite(pinBuzzer, HIGH);   // Ponemos en alto(5V) el pin del buzzer
   delay(60);                       // Esperamos 60ms
   digitalWrite(pinBuzzer, LOW);    // Ponemos en bajo(0V) el pin del buzzer
   delay(60);                       // Esperamos 60ms
-  
+  */
 }
 //Erroes durante el vuelo
 void signalVueloKo()
 {
-  //Serial.println("Vuelo finalizado con errores");
-  
+  Serial.println("Vuelo finalizado con errores");
+  /*
   digitalWrite(pinBuzzer, HIGH);   // Ponemos en alto(5V) el pin del buzzer
   delay(60);                       // Esperamos 60ms
   digitalWrite(pinBuzzer, LOW);    // Ponemos en bajo(0V) el pin del buzzer
@@ -85,7 +85,7 @@ void signalVueloKo()
   delay(60);                       // Esperamos 60ms
   digitalWrite(pinBuzzer, LOW);    // Ponemos en bajo(0V) el pin del buzzer
   delay(2000);                     // Esperamos 2 segundos
-  
+  */
 }
 //Funcion para escribir en memoria valores dobles
 template <class T> int EEPROM_writeAnything(int ee, const T& value)
@@ -131,7 +131,6 @@ void setup()
     Serial.print("auxMemPos = ");
     Serial.println(auxMemPos);
     auxMemPos = EEPROM_readAnything(memPos,auxValue);
-
     Serial.print("auxValue = ");
     Serial.println(auxValue);
     if ( auxMemPos!=memPos )
