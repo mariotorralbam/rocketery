@@ -33,6 +33,8 @@ double minimaPresion;
 //Posición de memoria donde grabar
 //el registro de altura
 int memPos;
+int auxMemPos;
+double auxValue;
 //********************************
 //Funciones auxiliares
 //********************************
@@ -93,6 +95,15 @@ template <class T> int EEPROM_writeAnything(int ee, const T& value)
           EEPROM.write(ee++, *p++);
     return i;
 }
+//Funcion para leer varloes dobles de memoria
+template <class T> int EEPROM_readAnything(int ee, T& value)
+{
+    byte* p = (byte*)(void*)&value;
+    unsigned int i;
+    for (i = 0; i < sizeof(value); i++)
+          *p++ = EEPROM.read(ee++);
+    return i;
+}
 //
 //********************************
 // FUNCION SETUP
@@ -105,8 +116,24 @@ void setup()
   pinMode(pinBuzzer, OUTPUT);
   minimaPresion = 0;
   error = false;
+  memPos = 0;
+  auxMemPos = 0;
+  while(!endMemory)
+  {
+    auxMemPos = EEPROM_readAnything(memPos,auxValue);
+    if (auxMemPos!=memPos)
+    {
+      memPos = auxMemPos;
+    }
+    else
+    {
+      endMemory = true;
+      memPos = memPos + 1;
+    }
+  }
 //
   altimetro.Initialize();
+  
 //
   if ( altimetro.getCota0() == 0 || memPos == -1)
   {
@@ -155,7 +182,7 @@ void loop()
       else
       {
         //Grabamos la altura máxima
-        EEPROM_writeAnything(0, altimetro.getAltura(altimetro.getCota0(), minimaPresion));
+        EEPROM_writeAnything(memPos, altimetro.getAltura(altimetro.getCota0(), minimaPresion));
         //Serial.print("Altura maxima = ");
         //Serial.println(altimetro.getAltura(altimetro.getCota0(), minimaPresion));
         while (true)
