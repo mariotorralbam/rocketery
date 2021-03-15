@@ -132,20 +132,22 @@ void setup()
     Serial.println(auxMemPos);
     Serial.print("auxValue = ");
     Serial.println(auxValue);
-    if ( auxMemPos!=memPos && !auxValue )
+    if ( auxMemPos!=memPos )
     {
-      memPos = auxMemPos;
-    }
-    else
-    {
-      if (!auxValue)
+      if (auxValue)
       {
-        memPos = 0;
+        Serial.println("Dentro if");
+        memPos = auxMemPos;
       }
       else
       {
-        memPos = auxMemPos + 1;
+        memPos = 0;
+        endMemory = true;
       }
+    }
+    else
+    {
+      memPos = auxMemPos + 1;
       Serial.print("Grabar en posicion = ");
       Serial.println(memPos);
       endMemory = true;
