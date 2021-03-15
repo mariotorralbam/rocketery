@@ -205,6 +205,8 @@ void loop()
       else
       {
         //Grabamos la altura máxima
+        Serial.print("memPos = ");
+        Serial.println(memPos);
         EEPROM_writeAnything(memPos, altimetro.getAltura(altimetro.getCota0(), minimaPresion));
         Serial.print("Altura maxima = ");
         Serial.println(altimetro.getAltura(altimetro.getCota0(), minimaPresion));
